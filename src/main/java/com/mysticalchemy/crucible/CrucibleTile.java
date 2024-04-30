@@ -1,16 +1,12 @@
 package com.mysticalchemy.crucible;
 
-import java.beans.Transient;
-import java.util.HashMap;
-import java.util.Optional;
-
+import com.mysticalchemy.api.events.CrucibleEvent;
 import com.mysticalchemy.config.BrewingConfig;
 import com.mysticalchemy.event.EventDispatcher;
 import com.mysticalchemy.init.BlockInit;
 import com.mysticalchemy.init.RecipeInit;
 import com.mysticalchemy.init.TileEntityInit;
 import com.mysticalchemy.recipe.PotionIngredientRecipe;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -20,7 +16,10 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.*;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.CraftingContainer;
+import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.inventory.TransientCraftingContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.Level;
@@ -31,6 +30,9 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.registries.ForgeRegistries;
+
+import java.util.HashMap;
+import java.util.Optional;
 
 public class CrucibleTile extends BlockEntity {
 
@@ -187,16 +189,18 @@ public class CrucibleTile extends BlockEntity {
 			return false;
 		}
 
-		Event.Result result = EventDispatcher.DispatchCrucibleAddIngredientEvent(this.getAllEffects(), stack);
-		if (result == Event.Result.DENY) {
-			return false;
-		}
-
-		if (!canMerge(recipe.get(), stack.getCount()) && result != Event.Result.ALLOW) {
-			return false;
-		}
-
 		PotionIngredientRecipe resolved_recipe = recipe.get();
+		CrucibleEvent.AddIngredient event = EventDispatcher.DispatchCrucibleAddIngredientEvent(this.getAllEffects(), resolved_recipe, stack);
+		if (event.getResult() == Event.Result.DENY) {
+			return false;
+		}
+
+		if (!canMerge(recipe.get(), stack.getCount()) && event.getResult() != Event.Result.ALLOW) {
+			return false;
+		}
+
+		//event may have modified the recipe
+		resolved_recipe = event.getRecipe();
 
 		//handle various properties
 		if (resolved_recipe.getMakesLingering())
