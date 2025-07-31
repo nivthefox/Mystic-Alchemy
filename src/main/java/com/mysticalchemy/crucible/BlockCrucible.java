@@ -1,13 +1,8 @@
 package com.mysticalchemy.crucible;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
 import com.mysticalchemy.event.EventDispatcher;
 import com.mysticalchemy.init.BlockInit;
 import com.mysticalchemy.init.TileEntityInit;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.cauldron.CauldronInteraction;
@@ -40,6 +35,10 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class BlockCrucible extends LayeredCauldronBlock implements EntityBlock, IDontCreateBlockItem {
 	public BlockCrucible() {

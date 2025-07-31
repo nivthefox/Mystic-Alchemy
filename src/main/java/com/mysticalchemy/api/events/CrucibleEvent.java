@@ -2,10 +2,8 @@ package com.mysticalchemy.api.events;
 
 import com.mysticalchemy.recipe.PotionIngredientRecipe;
 import net.minecraft.world.effect.MobEffect;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.eventbus.api.Cancelable;
 import net.minecraftforge.eventbus.api.Event;
 
 import java.util.HashMap;

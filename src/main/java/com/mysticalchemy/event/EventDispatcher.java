@@ -1,13 +1,11 @@
 package com.mysticalchemy.event;
 
 import com.mysticalchemy.api.events.CrucibleEvent;
-import com.mysticalchemy.crucible.CrucibleTile;
 import com.mysticalchemy.recipe.PotionIngredientRecipe;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.eventbus.api.Event;
 
 import java.util.HashMap;
 
